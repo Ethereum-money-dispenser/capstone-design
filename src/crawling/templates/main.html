@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contract Addresses</title>
+</head>
+<body>
+    <h1>Contract Addresses</h1>
+    
+    <!-- 네트워크 필터링 -->
+    <label for="network-filter">Filter by Network:</label>
+    <select id="network-filter">
+        <option value="all">All</option>
+        <option value="etherscan.io">etherscan.io</option>
+        <option value="bscscan.com">bscscan.com</option>
+        <option value="arbiscan.io">arbiscan.io</option>
+    </select>
+    <br>
+
+    <table border="2" width="80%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Network</th>
+                <th>Address</th>
+		        <th>Contract_name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row_number, row in rows_with_number %}
+            <tr class="{{ row['network'] }}">
+                <td>{{ row_number }}</td>
+                <td>{{ row['network'] }}</td>
+                <td>{{ row['address'] }}</td>
+                <td>{{ row['contract_name'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>        
+    </table>
+    
+    <script>
+        const networkFilter = document.getElementById('network-filter');
+        const rows = document.querySelectorAll('tr');
+        
+        networkFilter.addEventListener('change', function () {
+            const selectedNetwork = networkFilter.value;
+            
+            rows.forEach(row => {
+                if (selectedNetwork === 'all' || row.classList.contains(selectedNetwork)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
