@@ -6,7 +6,9 @@ apt upgrade -y
 apt install curl wget make gcc cmake git -y
 apt install libssl-dev libz3-dev pkg-config build-essential clang -y
 apt install python3 python3-pip -y
-pip install numpy
+python3 -m pip install solc-select
+python3 -m pip install numpy
+solc-select install all
 
 # install openssl
 wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz
