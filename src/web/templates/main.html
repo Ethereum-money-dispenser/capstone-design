@@ -1,0 +1,105 @@
+<!-- main.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contract Addresses</title>
+    <style>
+        /* Add your CSS styles here */
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            color: #007BFF;
+        }
+
+        .pagination a.active {
+            background-color: #007BFF;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Contract Addresses</h1>
+    
+    <!-- 네트워크 필터링 -->
+    <label for="network-filter">Filter by Network:</label>
+    <select id="network-filter">
+        <option value="all">All</option>
+        <option value="etherscan.io">etherscan.io</option>
+        <option value="bscscan.com">bscscan.com</option>
+        <option value="arbiscan.io">arbiscan.io</option>
+    </select>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Network</th>
+                <th>Address</th>
+                <th>Contract_name</th>
+            </tr>
+        </thead>
+        <tbody id="contract-rows">
+            {% for row_number, row in rows_with_number %}
+            <tr class="{{ row['network'] }}">
+                <td>{{ row_number }}</td>
+                <td>{{ row['network'] }}</td>
+                <td>{{ row['address'] }}</td>
+                <td>{{ row['contract_name'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>        
+    </table>
+
+    <div class="pagination">
+        {% for page in range(1, total_pages + 1) %}
+            <a href="?page={{ page }}" {% if page == current_page %}class="active"{% endif %}>{{ page }}</a>
+        {% endfor %}
+    </div>
+    
+    <script>
+        const networkFilter = document.getElementById('network-filter');
+        const rows = document.querySelectorAll('tr');
+        const contractRows = document.getElementById('contract-rows');
+        const rowsPerPage = 20;
+
+        function showRows(startIndex, endIndex) {
+            rows.forEach((row, index) => {
+                if (index >= startIndex && index < endIndex) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function showPage(page) {
+            const startIndex = (page - 1) * rowsPerPage;
+            const endIndex = startIndex + rowsPerPage;
+            showRows(startIndex, endIndex);
+        }
+
+        networkFilter.addEventListener('change', function () {
+            const selectedNetwork = networkFilter.value;
+
+            rows.forEach(row => {
+                if (selectedNetwork === 'all' || row.classList.contains(selectedNetwork)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Initially show the first page
+        showPage(1);
+    </script>
+</body>
+</html>
