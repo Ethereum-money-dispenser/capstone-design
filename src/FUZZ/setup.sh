@@ -29,6 +29,13 @@ echo "export PATH=$PATH:/usr/local/go/bin" >> /root/.bashrc
 
 source /root/.bashrc
 
+# install solc
+apt-get install software-properties-common
+add-apt-repository ppa:ethereum/ethereum
+add-apt-repository ppa:ethereum/ethereum-dev
+apt-get update
+apt-get install solc -y
+
 ######################### IR-Fuzz ###############################
 git clone https://github.com/Messi-Q/IR-Fuzz.git
 cd ./IR-Fuzz
