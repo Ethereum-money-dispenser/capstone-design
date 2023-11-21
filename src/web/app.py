@@ -38,5 +38,5 @@ def show_contract_addresses():
     return render_template('main.html', rows_with_number=paginated_rows, total_pages=total_pages, current_page=page)
 
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port=5000)
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
+    # app.run(debug=True)
