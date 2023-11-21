@@ -19,3 +19,5 @@ sudo chmod +x /usr/local/bin/docker-compose
 # Display Docker and Docker Compose versions
 docker --version
 docker-compose --version
+
+docker-compose up -d
