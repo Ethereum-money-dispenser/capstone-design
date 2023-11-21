@@ -5,6 +5,8 @@ apt update
 apt upgrade -y
 apt install curl wget make gcc cmake git -y
 apt install libssl-dev libz3-dev pkg-config build-essential clang -y
+apt install python3 python3-pip -y
+pip install numpy
 
 # install openssl
 wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz
@@ -19,7 +21,7 @@ cd ../
 wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
 chmod +x ./dotnet-install.sh
 ./dotnet-install.sh --channel 5.0
-echo "export PATH=$PATH:/root/.dotnet" >> /root/.bashrc
+echo "export PATH=\$PATH:/root/.dotnet" >> /root/.bashrc
 
 # install rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -27,9 +29,16 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 # install go
 wget https://go.dev/dl/go1.21.4.linux-amd64.tar.gz
 rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
-echo "export PATH=$PATH:/usr/local/go/bin" >> /root/.bashrc
+echo "export PATH=\$PATH:/usr/local/go/bin" >> /root/.bashrc
 
 source /root/.bashrc
+
+# install solc
+apt-get install software-properties-common
+add-apt-repository ppa:ethereum/ethereum
+add-apt-repository ppa:ethereum/ethereum-dev
+apt-get update
+apt-get install solc -y
 
 ######################### IR-Fuzz ###############################
 git clone https://github.com/Messi-Q/IR-Fuzz.git
