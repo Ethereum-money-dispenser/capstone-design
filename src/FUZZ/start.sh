@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Update package index
+sudo apt-get update
+
 # Install Docker
-sudo yum install -y docker
+sudo apt-get install -y docker.io
 
 # Start Docker service
 sudo systemctl start docker
@@ -16,5 +19,3 @@ sudo chmod +x /usr/local/bin/docker-compose
 # Display Docker and Docker Compose versions
 docker --version
 docker-compose --version
-
-docker-compose up -d
