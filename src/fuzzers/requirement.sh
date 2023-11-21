@@ -19,7 +19,7 @@ cd ../
 wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
 chmod +x ./dotnet-install.sh
 ./dotnet-install.sh --channel 5.0
-export PATH=$PATH:/root/.dotnet
+echo "export PATH=$PATH:/root/.dotnet" >> /root/.bashrc
 
 # install rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -27,7 +27,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 # install go
 wget https://go.dev/dl/go1.21.4.linux-amd64.tar.gz
 rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
-export PATH=$PATH:/usr/local/go/bin
+echo "export PATH=$PATH:/usr/local/go/bin" >> /root/.bashrc
 
 
 
@@ -47,7 +47,7 @@ cd ../
 
 ######################### ityfuzz ###############################
 curl -L https://ity.fuzz.land/ | bash
-##### restart #####
+source /root/.bashrc
 ityfuzzup
 
 #################################################################
