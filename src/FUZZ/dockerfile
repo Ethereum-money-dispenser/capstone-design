@@ -1,0 +1,19 @@
+FROM ubuntu:20.04
+
+ENV TZ Asia/Seoul  
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN mkdir /home/dev  
+RUN apt update && apt -y install vim git tar gzip build-essential curl nginx wget
+
+
+### /home/dev 폴더 이동   
+WORKDIR /home/dev
+
+COPY setup.sh /home/dev/setup.sh
+RUN export PATH=$PATH:/root/.dotnet
+RUN chmod +x setup.sh
+RUN ./setup.sh
+
+
+EXPOSE 80 8080
