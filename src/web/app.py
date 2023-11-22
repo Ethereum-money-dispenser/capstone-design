@@ -6,7 +6,7 @@ import sqlite3
 app = Flask(__name__, template_folder="templates")
 
 def get_db_connection():
-    conn = sqlite3.connect('./src/crawling/contract_addresses.db')
+    conn = sqlite3.connect('../crawling/contract_addresses.db')
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -38,5 +38,5 @@ def show_contract_addresses():
     return render_template('main.html', rows_with_number=paginated_rows, total_pages=total_pages, current_page=page)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
-    # app.run(debug=True)
+    # app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
