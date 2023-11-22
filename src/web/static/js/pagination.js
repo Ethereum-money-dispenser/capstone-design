@@ -1,5 +1,5 @@
 const networkFilter = document.getElementById('network-filter');
-const rows = document.querySelectorAll('tr');
+const rows = document.querySelectorAll('tbody > tr');
 const contractRows = document.getElementById('contract-rows');
 const rowsPerPage = 20;
 
