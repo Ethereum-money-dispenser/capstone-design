@@ -9,7 +9,7 @@ def create_backup_folder():
         print(f"Backup folder '{backup_folder}' created.")
 
 def backup_database():
-    database_file = "contract_addresses.db"
+    database_file = "/home/ubuntu/capstone-design/src/crawling/contract_addresses.db"
     backup_folder = "./backup"
     
     # Generate timestamp for the backup file

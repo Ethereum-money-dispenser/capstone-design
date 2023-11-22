@@ -6,7 +6,7 @@ import sqlite3
 app = Flask(__name__, template_folder="templates")
 
 def get_db_connection():
-    conn = sqlite3.connect('./src/crawling/contract_addresses.db')
+    conn = sqlite3.connect('/home/ubuntu/capstone-design/src/crawling/contract_addresses.db')
     conn.row_factory = sqlite3.Row
     return conn
 
