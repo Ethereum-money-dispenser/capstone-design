@@ -26,16 +26,17 @@ def show_contract_addresses():
     # Number assignment
     rows_with_number = [(index + 1, row) for index, row in enumerate(rows)]
     
-    keyword = ''
-    network = 'all'
-    
-    # keyword search
-    keyword = request.form.get('keyword', '', type=str).lower()
-    rows_with_number = [row for row in rows_with_number if keyword in row[1]['contract_name'].lower()]
-    
-    # network filtering
-    network = request.form.get('network', 'all', type=str)
-    rows_with_number = [row for row in rows_with_number if network == 'all' or row[1]['network'] == network]
+    if request.method == 'GET':
+        keyword = ''
+        network = 'all'
+    else:
+        # keyword search
+        keyword = request.form.get('keyword', '', type=str).lower()
+        rows_with_number = [row for row in rows_with_number if keyword in row[1]['contract_name'].lower()]
+        
+        # network filtering
+        network = request.form.get('network', 'all', type=str)
+        rows_with_number = [row for row in rows_with_number if network == 'all' or row[1]['network'] == network]
     
     # Pagination
     page = request.form.get('page', 1, type=int)
