@@ -16,9 +16,7 @@
                             <h1>Ethereum 스마트 컨트랙트 주소</h1>
                         </div>
                         <div>
-                            <p>
-                                조사한 Ethereum 스마트 컨트랙트들을 주소별로 정리한 페이지입니다.
-                            </p>
+                            <p>조사한 Ethereum 스마트 컨트랙트들을 주소별로 정리한 페이지입니다.</p>
                         </div>
                     </div>
                     <div class="ant-col ant-col-lg-9" style="padding-left: 16px; padding-right: 16px;">
@@ -31,20 +29,21 @@
         </div> 
         <div class="App-body">
             <div class="ant-col ant-row-middle centered-container">
-                <div class="ant-row ant-row-middle centered-container selection-border">
-                    <div class="network-filter-block ant-row-middle">
-                        <label for="network-filter">Filter by Network:  </label>
-                        <select id="network-filter">
-                            <option value="all">All</option>
-                            <option value="etherscan.io">etherscan.io</option>
-                            <option value="bscscan.com">bscscan.com</option>
-                            <option value="arbiscan.io">arbiscan.io</option>
-                        </select>
-                    </div>
-                </div>
+                <form id="filters" class="ant-row ant-row-middle centered-container filter-border">
+                    <input type="text" name="keyword" class="p-2" placeholder="Contract name...">
+                    
+                    <select id="network-filter" name="network-filter" class="p-2">
+                        <option value="all">All</option>
+                        <option value="etherscan.io">etherscan.io</option>
+                        <option value="bscscan.com">bscscan.com</option>
+                        <option value="arbiscan.io">arbiscan.io</option>
+                    </select>
+
+                    <button class="p-2 px-2" id="search-button">Search</button>
+                </form>
                 <div class="ant-row ant-row-middle centered-container table-border">
                     <div class="ant-table">
-                        <table>
+                        <table class="wrapper">
                             <colgroup></colgroup>
                             <thead class="ant-table-thead">
                                 <tr>
@@ -56,7 +55,7 @@
                             </thead>
                             <tbody id="contract-rows">
                                 {% for row_number, row in rows_with_number %}
-                                <tr class="{{ row['network'] }} ant-table-row">
+                                <tr class="{{ row['network'] }} {{row['contract_name']|lower}} ant-table-row item">
                                     <td class="ant-table-cell">{{ row_number }}</td>
                                     <td class="ant-table-cell">{{ row['network'] }}</td>
                                     <td class="ant-table-cell">{{ row['address'] }}</td>
@@ -68,13 +67,24 @@
                     </div>
                 </div>
             </div>
-            <div class="pagination ant-row ant-row-middle centered-container">
-                {% for page in range(1, total_pages + 1) %}
-                    <a href="?page={{ page }}" {% if page == current_page %} class="active" {% elif page < (current_page - 5) %} class="hidden" {% elif page > (current_page + 5) %} class="hidden" {% endif %}>{{ page }}</a>
-                {% endfor %}
+            <div class="pagination ant-row ant-row-middle centered-container" style="margin: 12px;">
+                <div class="ant-row ant-row-middle centered-container">
+                    <div class="ant-row ant-row-middle">
+                        <a href="?page={{ current_page - 1 }}"><< Prev</a>
+                    </div>
+                    <div class="ant-row ant-row-middle">
+                        {% for page in range(1, total_pages + 1) %}
+                        <a href="?page={{ page }}" {% if page == current_page %} class="active" {% elif page < (current_page - 5) %} class="hidden" {% elif page > (current_page + 5) %} class="hidden" {% endif %}>{{ page }}</a>
+                        {% endfor %}
+                    </div>
+                    <div class="ant-row ant-row-middle">
+                        <a href="?page={{ current_page + 1 }}">Next >></a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <script src="{{url_for('static', filename='js/filtering.js')}}"></script>
     <script src="{{url_for('static', filename='js/pagination.js')}}"></script>
 </body>
 </html>
