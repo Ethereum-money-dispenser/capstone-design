@@ -29,18 +29,19 @@
         </div> 
         <div class="App-body">
             <div class="ant-col ant-row-middle centered-container">
-                <form id="filters" class="ant-row ant-row-middle centered-container filter-border">
+                <form id="filters" class="ant-row ant-row-middle centered-container filter-border" method="post">
                     <input type="text" name="keyword" class="p-2" placeholder="Contract name...">
                     
-                    <select id="network-filter" name="network-filter" class="p-2">
-                        <option value="all">All</option>
-                        <option value="etherscan.io">etherscan.io</option>
-                        <option value="bscscan.com">bscscan.com</option>
-                        <option value="arbiscan.io">arbiscan.io</option>
+                    <select id="network-filter" name="network" class="p-2">
+                        <option value="all" {% if network == "all" %} selected {% endif %}>All</option>
+                        <option value="etherscan.io" {% if network == "etherscan.io" %} selected {% endif %}>etherscan.io</option>
+                        <option value="bscscan.com" {% if network == "bscscan.com" %} selected {% endif %}>bscscan.com</option>
+                        <option value="arbiscan.io" {% if network == "arbiscan.io" %} selected {% endif %}>arbiscan.io</option>
                     </select>
 
                     <button class="p-2 px-2" id="search-button">Search</button>
                 </form>
+
                 <div class="ant-row ant-row-middle centered-container table-border">
                     <div class="ant-table">
                         <table class="wrapper">
@@ -56,35 +57,44 @@
                             <tbody id="contract-rows">
                                 {% for row_number, row in rows_with_number %}
                                 <tr class="{{ row['network'] }} {{row['contract_name']|lower}} ant-table-row item">
-                                    <td class="ant-table-cell">{{ row_number }}</td>
-                                    <td class="ant-table-cell">{{ row['network'] }}</td>
-                                    <td class="ant-table-cell">{{ row['address'] }}</td>
-                                    <td class="ant-table-cell">{{ row['contract_name'] }}</td>
+                                    <td class="ant-table-cell row-number">{{ row_number }}</td>
+                                    <td class="ant-table-cell network">{{ row['network'] }}</td>
+                                    <td class="ant-table-cell address">{{ row['address'] }}</td>
+                                    <td class="ant-table-cell contract-name">{{ row['contract_name'] }}</td>
                                 </tr>
                                 {% endfor %}
-                            </tbody>        
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
             <div class="pagination ant-row ant-row-middle centered-container" style="margin: 12px;">
                 <div class="ant-row ant-row-middle centered-container">
-                    <div class="ant-row ant-row-middle">
-                        <a href="?page={{ current_page - 1 }}"><< Prev</a>
-                    </div>
-                    <div class="ant-row ant-row-middle">
-                        {% for page in range(1, total_pages + 1) %}
-                        <a href="?page={{ page }}" {% if page == current_page %} class="active" {% elif page < (current_page - 5) %} class="hidden" {% elif page > (current_page + 5) %} class="hidden" {% endif %}>{{ page }}</a>
-                        {% endfor %}
-                    </div>
-                    <div class="ant-row ant-row-middle">
-                        <a href="?page={{ current_page + 1 }}">Next >></a>
-                    </div>
+                    <form class="ant-row ant-row-middle" method="post">
+                        <input type="hidden" name="network" value="{{network}}">
+                        <input type="hidden" name="keyword" value="{{keyword}}">
+                        <input type="hidden" name="page" value="{{current_page - 1}}">
+                        <button {% if current_page == 1 %} disabled {% endif %}><< Prev</button>
+                    </form>
+
+                    {% for page in range(1, total_pages + 1) %}
+                    <form class="ant-row ant-row-middle" method="post">
+                        <input type="hidden" name="network" value="{{network}}">
+                        <input type="hidden" name="keyword" value="{{keyword}}">
+                        <input type="hidden" name="page" value="{{page}}">
+                        <button {% if page == current_page %} class="active" {% elif (page < (current_page - 5)) or (page > (current_page + 5)) %} hidden {% endif %}>{{ page }}</button>
+                    </form>
+                    {% endfor %}
+
+                    <form class="ant-row ant-row-middle" method="post">
+                        <input type="hidden" name="network" value="{{network}}">
+                        <input type="hidden" name="keyword" value="{{keyword}}">
+                        <input type="hidden" name="page" value="{{current_page + 1}}">
+                        <button {% if current_page == total_pages %} disabled {% endif %}>Next >></button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <script src="{{url_for('static', filename='js/filtering.js')}}"></script>
-    <script src="{{url_for('static', filename='js/pagination.js')}}"></script>
 </body>
 </html>

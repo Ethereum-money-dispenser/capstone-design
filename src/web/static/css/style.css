@@ -45,14 +45,14 @@ body {
     padding-right: 24px;
 }
 
-.pagination a {
+.pagination button {
     text-decoration: none;
     padding: 8px 16px;
     border: 1px solid #ddd;
     color: #6c6c70;
 }
 
-.pagination a.active {
+.pagination button.active {
     background-color: #6c6c70;
     color: white;
 }
@@ -213,7 +213,27 @@ tr {
     padding: 0.5rem;
 }
 
-input, button, select, textarea {
+#filters input {
+    font-family: inherit;
+    font-size: 100%;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+    margin: 0;
+    width: 200px;
+}
+
+#filters button {
+    font-family: inherit;
+    font-size: 100%;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+    margin: 0;
+    width: 200px;
+}
+
+#filters select {
     font-family: inherit;
     font-size: 100%;
     font-weight: inherit;
