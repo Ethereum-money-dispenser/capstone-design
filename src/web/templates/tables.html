@@ -1,0 +1,58 @@
+{% extends "template.html" %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
+        For more information about DataTables, please visit the <a target="_blank"
+            href="https://datatables.net">official DataTables documentation</a>.</p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+            <div style="width:20rem">
+                <form id="filters" class="ant-row ant-row-middle centered-container filter-border" method="post">
+                    <select id="network-filter" name="network" class="custom-select custom-select-sm form-control form-control-sm" onchange="document.querySelector('#search-button').click();">
+                        <option value="all" {% if network == "all" %} selected {% endif %}>All</option>
+                        <option value="etherscan.io" {% if network == "etherscan.io" %} selected {% endif %}>etherscan.io</option>
+                        <option value="bscscan.com" {% if network == "bscscan.com" %} selected {% endif %}>bscscan.com</option>
+                        <option value="arbiscan.io" {% if network == "arbiscan.io" %} selected {% endif %}>arbiscan.io</option>
+                    </select>
+    
+                    <button hidden id="search-button">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Number</th>
+                            <th>Network</th>
+                            <th>Address</th>
+                            <th>Contract name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row_number, row in rows_with_number %}
+                        <tr class="{{ row['network'] }} {{row['contract_name']|lower}}">
+                            <td>{{ row_number }}</td>
+                            <td>{{ row['network'] }}</td>
+                            <td>{{ row['address'] }}</td>
+                            <td>{{ row['contract_name'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
+{% endblock %}
