@@ -5,6 +5,7 @@ apt install curl wget make gcc cmake git -y
 apt install libssl-dev libz3-dev pkg-config build-essential clang -y
 apt install python3 python3-pip -y
 python3 -m pip install numpy
+python3 -m pip install crytic-compile
 
 # install openssl
 wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz
