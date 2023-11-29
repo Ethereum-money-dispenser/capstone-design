@@ -22,6 +22,10 @@ def charts():
 def cards():
     return render_template('cards.html')
 
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
 @app.route('/tables', methods=['GET', 'POST'])
 def show_contract_addresses():
     conn = get_db_connection()
