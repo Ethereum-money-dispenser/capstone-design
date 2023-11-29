@@ -20,4 +20,5 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker --version
 docker-compose --version
 
+sudo chmod 666 /var/run/docker.sock
 docker-compose up -d
