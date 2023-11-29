@@ -12,13 +12,16 @@ function highlightSidebar() {
         case 'Tables':
             sidebar_list[2].classList.add('active');
             break;
-        case 'Admin':
-            sidebar_list[3].classList.add('active');
-            sidebar_list[3].querySelectorAll('a.collapse-item')[0].innerHTML = "<b>admin<b/>";
-            break;
         case 'Cards':
             sidebar_list[3].classList.add('active');
-            sidebar_list[3].querySelectorAll('a.collapse-item')[1].innerHTML = "<b>cards<b/>";
+            break;
+        case 'Admin':
+            sidebar_list[4].classList.add('active');
+            sidebar_list[4].querySelectorAll('a.collapse-item')[0].innerHTML = "<b>Admin<b/>";
+            break;
+        case 'Admin':
+            sidebar_list[4].classList.add('active');
+            sidebar_list[4].querySelectorAll('a.collapse-item')[1].innerHTML = "<b>Users<b/>";
             break;
         default:
             break;
