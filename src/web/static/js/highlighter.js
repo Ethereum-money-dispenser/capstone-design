@@ -19,9 +19,13 @@ function highlightSidebar() {
             sidebar_list[4].classList.add('active');
             sidebar_list[4].querySelectorAll('a.collapse-item')[0].innerHTML = "<b>Admin<b/>";
             break;
-        case 'Users':
+        case 'Users receiving':
             sidebar_list[4].classList.add('active');
-            sidebar_list[4].querySelectorAll('a.collapse-item')[1].innerHTML = "<b>Users<b/>";
+            sidebar_list[4].querySelectorAll('a.collapse-item')[1].innerHTML = "<b>Users receiving<b/>";
+            break;
+        case 'Users sending':
+            sidebar_list[4].classList.add('active');
+            sidebar_list[4].querySelectorAll('a.collapse-item')[2].innerHTML = "<b>Users sending<b/>";
             break;
         default:
             break;

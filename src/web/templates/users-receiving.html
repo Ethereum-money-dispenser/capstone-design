@@ -5,31 +5,26 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-        For more information about DataTables, please visit the <a target="_blank"
-            href="https://datatables.net">official DataTables documentation</a>.</p>
-
+    <h1 class="h3 mb-2 text-gray-800">Users receiving</h1>
+    <p class="mb-4">Please download the result of fuzzing.</p>
+    
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Select user</h6>
             <div style="width:20rem">
                 <form id="filters" method="post">
-                    <select id="network-filter" name="network" class="custom-select custom-select-sm form-control form-control-sm" onchange="document.querySelector('#search-button').click();">
-                        <option value="all" {% if network == "all" %} selected {% endif %}>All</option>
-                        <option value="etherscan.io" {% if network == "etherscan.io" %} selected {% endif %}>etherscan.io</option>
-                        <option value="bscscan.com" {% if network == "bscscan.com" %} selected {% endif %}>bscscan.com</option>
-                        <option value="arbiscan.io" {% if network == "arbiscan.io" %} selected {% endif %}>arbiscan.io</option>
-                    </select>
-    
-                    <button hidden id="search-button">Search</button>
+                    <div class="form-group">
+                        <input type="text" name="userid" class="form-control form-control-user" placeholder="capstonexxx">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block btn-user" id="search-button">Search</button>
+                    </div>
                 </form>
             </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
@@ -53,6 +48,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
 <!-- /.container-fluid -->
 {% endblock %}
