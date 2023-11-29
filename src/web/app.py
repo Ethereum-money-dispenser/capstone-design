@@ -4,24 +4,28 @@ from flask import Flask, render_template, request
 import sqlite3
 import hashlib
 
-# initialize vulnerabilities.db
-conn = sqlite3.connect('../databases/vulnerabilities.db')
-cursor = conn.cursor()
+def init_vuln_db():
+    # initialize vulnerabilities.db
+    conn = sqlite3.connect('../databases/vulnerabilities.db')
+    cursor = conn.cursor()
 
-# create table
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS vulnerabilities (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id TEXT NOT NULL,
-        contract_address TEXT NOT NULL,
-        vuln_file BLOB NOT NULL
-    )'''
-)
+    # create table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS vulnerabilities (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id TEXT NOT NULL,
+            contract_address TEXT NOT NULL,
+            vuln_file BLOB NOT NULL
+        )'''
+    )
 
-conn.commit()
-conn.close()
+    conn.commit()
+    conn.close()
+    
+init_vuln_db()
 
 app = Flask(__name__, template_folder="templates")
+members = []
 
 def get_address_db_connection():
     conn = sqlite3.connect('../databases/contract_addresses.db')
@@ -49,7 +53,7 @@ def cards():
 def admin():
     return render_template('admin.html')
 
-@app.route('/tables')
+@app.route('/tables', methods=['GET', 'POST'])
 def show_contract_addresses():
     conn = get_address_db_connection()
     cursor = conn.cursor()
@@ -70,9 +74,37 @@ def show_contract_addresses():
     
     return render_template('tables.html', rows_with_number=rows_with_number, network=network)
 
-@app.route('/users')
-def users():
-    return render_template('users.html')
+@app.route('/users-receiving', methods=['GET', 'POST'])
+def users_receiving():
+    if request.method == 'GET':
+        return render_template('users-receiving.html')
+    else:
+        userid: str = request.form.get('userid', type=str)
+        # check if userid is valid
+        if not userid or userid[:8] != 'capstone':
+            return render_template('error.html', error_code='Invalid userid')
+        # check if userid is new
+        if userid not in members: 
+            members.append(userid)
+            
+        # get list from DB
+        conn = get_address_db_connection()
+        cursor = conn.cursor()
+        
+        cursor.execute('SELECT network, address, contract_name FROM contract_addresses')
+        rows = cursor.fetchall()
+        
+        conn.close()
+    
+        # Number assignment
+        rows_with_number = [(index + 1, row) for index, row in enumerate(rows)]
+        rows_with_number = [row for row in rows_with_number if row[0] % len(members) == members.index(userid)]
+           
+        return render_template('users-receiving.html', rows_with_number=rows_with_number)
+
+@app.route('/users-sending')
+def users_sending():
+    return render_template('users-sending.html')
 
 @app.errorhandler(404)
 def handing404(error):
