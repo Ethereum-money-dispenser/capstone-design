@@ -1,0 +1,27 @@
+{% extends "template.html" %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Users</h1>
+    <p class="mb-4">Please upload the result of fuzzing.</p>
+    <form method="post" action="/insertion" class="user">
+        <div class="form-group">
+            <input type="text" name="contract-address" class="form-control form-control-user" placeholder="Enter smart contract address...">
+        </div>
+        <div class="form-group">
+            <input type="file" name="vuln-file">
+        </div>
+        <div class="form-group">
+            <input type="text" name="userid" class="form-control form-control-user" placeholder="Enter user ID">
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" class="form-control form-control-user" placeholder="Password">
+        </div>
+        <button class="btn btn-primary btn-user btn-block">Deploy</button>
+    </form>
+</div>
+<!-- /.container-fluid -->
+{% endblock %}

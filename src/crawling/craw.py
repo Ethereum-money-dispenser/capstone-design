@@ -3,7 +3,7 @@ import re
 from lxml import html
 import sqlite3
 
-conn = sqlite3.connect('contract_addresses.db')
+conn = sqlite3.connect('../databases/contract_addresses.db')
 cursor = conn.cursor()
 cursor.execute('''
     CREATE TABLE IF NOT EXISTS contract_addresses (

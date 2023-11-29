@@ -19,7 +19,7 @@ function highlightSidebar() {
             sidebar_list[4].classList.add('active');
             sidebar_list[4].querySelectorAll('a.collapse-item')[0].innerHTML = "<b>Admin<b/>";
             break;
-        case 'Admin':
+        case 'Users':
             sidebar_list[4].classList.add('active');
             sidebar_list[4].querySelectorAll('a.collapse-item')[1].innerHTML = "<b>Users<b/>";
             break;
