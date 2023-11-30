@@ -43,7 +43,8 @@ RUN export PATH=\$PATH:/root/.dotnet
 RUN echo "export PATH=\$PATH:/root/.dotnet" >> /root/.bashrc
 
 # install rust
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -y | sh
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
+RUN source /root/.bashrc
 
 # install go
 RUN wget https://go.dev/dl/go1.21.4.linux-amd64.tar.gz
