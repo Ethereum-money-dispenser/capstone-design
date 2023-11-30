@@ -1,19 +1,94 @@
 FROM ubuntu:20.04
+SHELL ["/bin/bash", "-c"]
+
 
 ENV TZ Asia/Seoul  
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN mkdir /home/dev  
-RUN apt update && apt -y install vim git tar gzip build-essential curl nginx wget
+RUN mkdir /home/dev
 
-
-### /home/dev 폴더 이동   
+### /home/dev 폴더 이동
 WORKDIR /home/dev
 
-COPY setup.sh /home/dev/setup.sh
-RUN export PATH=$PATH:/root/.dotnet
-RUN chmod +x setup.sh
-RUN ./setup.sh
+######################### Base Install ##########################
+RUN apt update
+RUN apt upgrade -y
+RUN apt install curl wget make gcc cmake git vim tar gzip nginx -y
+RUN apt install libssl-dev libz3-dev pkg-config build-essential clang -y
+RUN apt-get install libleveldb-dev libsnappy-dev sqlite3 -y
+RUN apt install python3 python3-pip python-is-python3 -y
+RUN python3 -m pip install numpy
+RUN python3 -m pip install crytic-compile
 
+# install git lfs
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
+RUN apt-get install git-lfs -y
+RUN git lfs install
+
+# install openssl
+RUN wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz
+RUN tar xf ./openssl-1.1.1w.tar.gz
+WORKDIR openssl-1.1.1w
+RUN ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared
+RUN make
+RUN make install_sw
+WORKDIR ../
+
+# install dotnet
+RUN wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+RUN chmod +x ./dotnet-install.sh
+RUN ./dotnet-install.sh --channel 5.0
+ENV PATH="${PATH}:/root/.dotnet"
+RUN export PATH=\$PATH:/root/.dotnet
+RUN echo "export PATH=\$PATH:/root/.dotnet" >> /root/.bashrc
+
+# install rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
+RUN source /root/.bashrc
+
+# install go
+RUN wget https://go.dev/dl/go1.21.4.linux-amd64.tar.gz
+RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.4.linux-amd64.tar.gz
+ENV PATH="${PATH}:/usr/local/go/bin"
+RUN echo "export PATH=\$PATH:/usr/local/go/bin" >> /root/.bashrc
+RUN source /root/.bashrc
+
+# install solc
+RUN apt-get install software-properties-common -y
+RUN add-apt-repository ppa:ethereum/ethereum
+RUN add-apt-repository ppa:ethereum/ethereum-dev
+RUN apt-get update
+RUN apt-get install solc -y
+RUN python3 -m pip install solc-select
+RUN solc-select install all
+#################################################################
+
+######################### IR-Fuzz ###############################
+RUN git clone https://github.com/Messi-Q/IR-Fuzz.git
+WORKDIR ./IR-Fuzz
+RUN ./initial_.sh
+RUN git lfs pull
+WORKDIR ../
+#################################################################
+
+######################### Smartian ##############################
+RUN git clone https://github.com/SoftSec-KAIST/Smartian.git
+WORKDIR ./Smartian
+RUN git submodule update --init --recursive
+RUN make
+WORKDIR ../
+#################################################################
+
+######################### ityfuzz ###############################
+RUN curl -L https://ity.fuzz.land/ | bash
+RUN source /root/.bashrc
+RUN cp /root/.ityfuzz/bin/ityfuzz /root/.ityfuzz/bin/ityfuzz_
+RUN ityfuzzup
+
+#################################################################
+
+######################## Remove tar #############################
+RUN rm -rf *.tar.gz
+#################################################################
 
 EXPOSE 80 8080
