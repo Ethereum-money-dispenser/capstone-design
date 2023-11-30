@@ -16,7 +16,7 @@ RUN apt upgrade -y
 RUN apt install curl wget make gcc cmake git vim tar gzip nginx -y
 RUN apt install libssl-dev libz3-dev pkg-config build-essential clang -y
 RUN apt-get install libleveldb-dev libsnappy-dev sqlite3 -y
-RUN apt install python3 python3-pip -y
+RUN apt install python3 python3-pip python-is-python3 -y
 RUN python3 -m pip install numpy
 RUN python3 -m pip install crytic-compile
 
@@ -84,6 +84,10 @@ RUN source /root/.bashrc
 RUN cp /root/.ityfuzz/bin/ityfuzz /root/.ityfuzz/bin/ityfuzz_
 RUN ityfuzzup
 
+#################################################################
+
+######################## Remove tar #############################
+RUN rm -rf *.tar.gz
 #################################################################
 
 EXPOSE 80 8080
