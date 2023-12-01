@@ -81,9 +81,8 @@ WORKDIR ../
 
 ######################### ityfuzz ###############################
 RUN curl -L https://ity.fuzz.land/ | bash
-RUN source /root/.bashrc
-RUN cp /root/.ityfuzz/bin/ityfuzz /root/.ityfuzz/bin/ityfuzz_
-RUN ityfuzzup
+RUN cp $HOME/.ityfuzz/bin/ityfuzzup $HOME/.ityfuzz/bin/ityfuzz_
+RUN $HOME/.ityfuzz/bin/ityfuzzup
 
 #################################################################
 
