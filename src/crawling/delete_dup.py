@@ -30,8 +30,8 @@ def select_unprocessed_address():
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    # cursor.execute("SELECT address FROM contract_addresses WHERE similar = 0 AND network = 'etherscan.io' LIMIT 1;")
-    cursor.execute("SELECT address FROM contract_addresses WHERE similar = 0 LIMIT 1;")
+    cursor.execute("SELECT address FROM contract_addresses WHERE similar = 0 AND network = 'etherscan.io' LIMIT 1;")
+    # cursor.execute("SELECT address FROM contract_addresses WHERE similar = 0 LIMIT 1;")
     result = cursor.fetchone()
 
     conn.close()
@@ -108,18 +108,21 @@ params_base = {
 
 def process_all_unprocessed_addresses():
     while True:
-        initialize_database()
-        address = select_unprocessed_address()
+        try:    
+            initialize_database()
+            address = select_unprocessed_address()
 
-        if address is None:
-            print("No unprocessed addresses remaining.")
-            break
+            if address is None:
+                print("No unprocessed addresses remaining.")
+                break
 
-        params_base['a'] = address
-        update_similar_column(address, address)
-        process_etherscan_data(params_base=params_base)
-        update_similar_addresses(address, address)
-        print(f"Processed address: {address}")
+            params_base['a'] = address
+            update_similar_column(address, address)
+            process_etherscan_data(params_base=params_base)
+            update_similar_addresses(address, address)
+            print(f"Processed address: {address}")
+        except:
+            continue
 
 # Example usage
 process_all_unprocessed_addresses()

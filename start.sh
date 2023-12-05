@@ -8,5 +8,4 @@ crontab -r
 (crontab -l ; echo "0 * * * * cd ~/capstone-design/src/crawling && /usr/bin/python3 ./delete_dup.py >> ~/log/log.txt 2>&1") | crontab -
 
 # web server start
-cd ./src/web
-python3 ./app.py
+tmux new-session -d -s session_name 'cd ~/capstone-design/src/web && python3 ./app.py'
