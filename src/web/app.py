@@ -58,7 +58,7 @@ def show_contract_addresses():
     conn = get_address_db_connection()
     cursor = conn.cursor()
     
-    cursor.execute('SELECT network, address, contract_name FROM contract_addresses')
+    cursor.execute('SELECT network, address, contract_name, similar FROM contract_addresses')
     rows = cursor.fetchall()
     
     conn.close()
