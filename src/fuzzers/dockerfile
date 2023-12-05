@@ -90,4 +90,4 @@ RUN $HOME/.ityfuzz/bin/ityfuzzup
 RUN rm -rf *.tar.gz
 #################################################################
 
-EXPOSE 80 8080
+# EXPOSE 80 8080
