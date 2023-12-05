@@ -19,10 +19,10 @@ def extract_bytecode(solc_output, contract_name):
     return bytecode_hex
 
 def save_bytecode_to_file(bytecode_hex, output_file):
-    bytecode_bytes = bytes.fromhex(bytecode_hex)
+    # bytecode_bytes = bytes.fromhex(bytecode_hex)
 
-    with open(output_file, 'wb') as file:
-        file.write(bytecode_bytes)
+    with open(output_file, 'w') as file:
+        file.write(bytecode_hex)
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
