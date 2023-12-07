@@ -50,14 +50,14 @@ class Fuzzer():
         get_sourcecode_query: str = f"&action=getsourcecode&address={address}&apikey{self.etherscan_api}"
         
         if network == "etherscan":
-            get_abi: str = self.etherscan_api_link + get_abi_query + f"&apikey{self.etherscan_api}"
-            get_sourcecode: str = self.etherscan_api_link + get_sourcecode_query + f"&apikey{self.etherscan_api}"
+            get_abi: str = self.etherscan_api_link + get_abi_query
+            get_sourcecode: str = self.etherscan_api_link + get_sourcecode_query
         elif network == "bscscan":
-            get_abi: str = self.bscscan_api_link + get_abi_query + f"&apikey{self.bscscan_api}"
-            get_sourcecode: str = self.bscscan_api_link + get_sourcecode_query + f"&apikey{self.bscscan_api}"
+            get_abi: str = self.bscscan_api_link + get_abi_query
+            get_sourcecode: str = self.bscscan_api_link + get_sourcecode_query
         elif network == "arbiscan":
-            get_abi: str = self.arbiscan_api_link + get_abi_query + f"&apikey{self.arbiscan_api}"
-            get_sourcecode: str = self.arbiscan_api_link + get_sourcecode_query + f"&apikey{self.arbiscan_api}"
+            get_abi: str = self.arbiscan_api_link + get_abi_query
+            get_sourcecode: str = self.arbiscan_api_link + get_sourcecode_query
         
         source_code: str = json.loads(requests.get(get_abi).text)['result'][0]['SourceCode']
         
