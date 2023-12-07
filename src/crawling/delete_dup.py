@@ -31,7 +31,6 @@ def select_unprocessed_address():
     cursor = conn.cursor()
 
     cursor.execute("SELECT address FROM contract_addresses WHERE similar = 0 AND network = 'etherscan.io' LIMIT 1;")
-    # cursor.execute("SELECT address FROM contract_addresses WHERE similar = 0 LIMIT 1;")
     result = cursor.fetchone()
 
     conn.close()
@@ -45,12 +44,12 @@ def update_similar_addresses(address, similar_value):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    cursor.execute("SELECT address FROM contract_addresses WHERE similar = ? ORDER BY id DESC LIMIT 1;", (similar_value,))
+    cursor.execute("SELECT address FROM contract_addresses WHERE similar = ? AND network = 'etherscan.io' ORDER BY id DESC LIMIT 1;", (similar_value,))
     max_id_address = cursor.fetchone()
 
     if max_id_address:
 
-        cursor.execute("UPDATE contract_addresses SET similar = ? WHERE address = ?;", (similar_value, max_id_address[0],))
+        cursor.execute("UPDATE contract_addresses SET similar = ? WHERE address = ? AND network = 'etherscan.io';", (similar_value, max_id_address[0],))
 
         conn.commit()
 

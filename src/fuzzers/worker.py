@@ -14,7 +14,7 @@ from requests import Response
 class Fuzzer():
     def __init__(self) -> None:
         self.addresses: list = []
-        self.etherscan_api_key: str = "[Etherscan API key]"
+        self.etherscan_api_key: str = "9NFWVRRXYWJI1BUU3H8Y9IZTZKXGF4TUK3"
         self.bscscan_api_key: str = "[Bscscan API key]"
         self.arbiscan_api_key: str = "[Arbiscan API key]"
         # self.url_sending: str = "http://64.110.110.12:5000/users-sending"
