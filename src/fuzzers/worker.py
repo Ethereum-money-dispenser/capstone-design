@@ -100,7 +100,8 @@ class Fuzzer():
         abi_response: Response = requests.get(self.etherscan_api_link, params=abi_params)
         abi_result: Dict = abi_response.json()
 
-        abi: Dict = abi_result["result"]
+        abi: str = abi_result["result"]
+        abi_json = json.loads(abi)
         
         byte_params: Dict = {
             "module": "proxy",
@@ -113,7 +114,7 @@ class Fuzzer():
         byte_result: Dict = byte_response.json()
         bytecode: str = byte_result["result"][2:]
         
-        return {"abi": abi, "bytecode": bytecode}
+        return {"abi": abi_json, "bytecode": bytecode}
 
     def save_information_to_file(self, address: str, network: str, information: Dict[str, str]) -> None:
         # Make information directory
