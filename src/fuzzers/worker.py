@@ -191,14 +191,11 @@ class ity_fuzzer(Fuzzer):
     def manage_fuzzer(self, address: str, timelimit: int = 60) -> None:
         super().manage_fuzzer()
         
-        for address in self.addresses:
-            # check the version of the contract
+        command: str = f"ityfuzz evm -t {address} -c ETH"
+        if address['network'] == "etherscan.io": 
+            command += f"--onchain-etherscan-api-key {self.etherscan_api}"
             
-            command: str = f"ityfuzz evm -t {address} -c ETH"
-            if address['network'] == "etherscan.io": 
-                command += f"--onchain-etherscan-api-key {self.etherscan_api}"
-                
-            self.run_command(command, timelimit)
+        self.run_command(command, timelimit)
 
 # example
 id: str = "capstone122"
