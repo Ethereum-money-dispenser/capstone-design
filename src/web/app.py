@@ -91,7 +91,7 @@ def users_receiving():
         conn = get_address_db_connection()
         cursor = conn.cursor()
         
-        cursor.execute('SELECT network, address, contract_name FROM contract_addresses')
+        cursor.execute('SELECT network, address, contract_name FROM contract_addresses limit 4')
         rows = cursor.fetchall()
         
         conn.close()
