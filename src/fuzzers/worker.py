@@ -111,7 +111,7 @@ class Fuzzer():
         
         byte_response: Response = requests.get(self.etherscan_api_link, params=byte_params)
         byte_result: Dict = byte_response.json()
-        bytecode: str = byte_result["result"]
+        bytecode: str = byte_result["result"][2:]
         
         return {"abi": abi, "bytecode": bytecode}
 
