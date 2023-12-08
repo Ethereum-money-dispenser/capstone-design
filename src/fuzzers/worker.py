@@ -1,6 +1,7 @@
 # Managing fuzzers
 import sqlite3
 import os
+import sys
 import threading
 import subprocess
 import json
@@ -199,7 +200,7 @@ class ity_fuzzer(Fuzzer):
         self.run_command(command, timelimit)
 
 # example
-id: str = "capstone122"
+id: str = "capstone" + sys.argv[1]
 
 # smartian = Smartian_fuzzer(id)
 ity = ity_fuzzer(id)
