@@ -12,6 +12,8 @@ from subprocess import CompletedProcess
 from sqlite3 import Connection, Cursor
 from requests import Response
 
+from typing import Dict, List
+
 class Fuzzer():
     def __init__(self, id: str) -> None:
         self.id = id
@@ -26,12 +28,12 @@ class Fuzzer():
         self.bscscan_api_link: str = "https://api.bscscan.com/api"
         self.arbiscan_api_link: str = "https://api.arbiscan.io/api"
 
-    def load_dataset(self) -> list[dict[str, str]]:
+    def load_dataset(self) -> List[Dict[str, str]]:
         '''
         Load the dataset from server
         '''
         
-        headers = {
+        headers: Dict = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
             'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
             'Cache-Control': 'no-cache',
@@ -51,7 +53,7 @@ class Fuzzer():
             'sec-ch-ua-platform': '"Windows"',
         }
         
-        data = {
+        data: Dict = {
             'userid': self.id,
         }
 
@@ -61,7 +63,7 @@ class Fuzzer():
         table: Tag = soup.find('table', attrs={'id':'dataTable'})
         tbody: Tag = table.find('tbody')
         
-        addresses: list = []
+        addresses: List = []
         for row in tbody.find_all('tr'):
             cols = row.find_all('td')
             network: str = cols[1].text
@@ -74,7 +76,7 @@ class Fuzzer():
             
         return addresses
     
-    def get_information_from_address(self, data: dict[str, str]) -> dict[str, str]:
+    def get_information_from_address(self, data: Dict[str, str]) -> Dict[str, str]:
         # get contract abi, source code, bytecode from address and save to the file
         get_abi_query: str = f"&action=getabi&address={data['address']}"
         get_sourcecode_query: str = f"&action=getsourcecode&address={data['address']}&apikey={self.etherscan_api_key}"
@@ -89,18 +91,18 @@ class Fuzzer():
             get_abi: str = self.arbiscan_api_link + get_abi_query
             get_sourcecode: str = self.arbiscan_api_link + get_sourcecode_query
         
-        abi_params: dict = {
+        abi_params: Dict = {
             "module": "contract",
             "action": "getabi",
             "address": data['address'],
             "apikey": self.etherscan_api_key
         }
         abi_response: Response = requests.get(self.etherscan_api_link, params=abi_params)
-        abi_result: dict = abi_response.json()
+        abi_result: Dict = abi_response.json()
 
-        abi: dict = abi_result["result"]
+        abi: Dict = abi_result["result"]
         
-        byte_params: dict = {
+        byte_params: Dict = {
             "module": "proxy",
             "action": "eth_getCode",
             "address": data['address'],
@@ -108,12 +110,12 @@ class Fuzzer():
         }
         
         byte_response: Response = requests.get(self.etherscan_api_link, params=byte_params)
-        byte_result: dict = byte_response.json()
+        byte_result: Dict = byte_response.json()
         bytecode: str = byte_result["result"]
         
         return {"abi": abi, "bytecode": bytecode}
 
-    def save_information_to_file(self, address: str, network: str, information: dict[str, str]) -> None:
+    def save_information_to_file(self, address: str, network: str, information: Dict[str, str]) -> None:
         # Make information directory
         information_dir_name: str = "information"
         if not os.path.exists(information_dir_name):
@@ -205,7 +207,7 @@ ity_fuzzer = ity_fuzzer(id)
 dataset = smartian_fuzzer.load_dataset()
 
 for data in dataset:
-    target_dict: dict[str, str] = smartian_fuzzer.get_information_from_address(data)
+    target_dict: Dict[str, str] = smartian_fuzzer.get_information_from_address(data)
     smartian_fuzzer.save_information_to_file(data['address'], data['network'], target_dict)
     
     # fuzz manage
