@@ -161,7 +161,7 @@ class Smartian_fuzzer(Fuzzer):
         super().manage_fuzzer()
         
         # Make output directory if not exists
-        output_dir: str = "output"
+        output_dir: str = "./output"
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
             
