@@ -6,15 +6,15 @@ import subprocess
 import json
 import requests
 from bs4 import BeautifulSoup
+from bs4 import Tag
 # from downloader import Downloader
 from subprocess import CompletedProcess
 from sqlite3 import Connection, Cursor
 from requests import Response
 
 class Fuzzer():
-    def __init__(self, id) -> None:
+    def __init__(self, id: str) -> None:
         self.id = id
-        self.addresses: list = []
         self.etherscan_api_key: str = "9NFWVRRXYWJI1BUU3H8Y9IZTZKXGF4TUK3"
         self.bscscan_api_key: str = "[Bscscan API key]"
         self.arbiscan_api_key: str = "[Arbiscan API key]"
@@ -26,7 +26,7 @@ class Fuzzer():
         self.bscscan_api_link: str = "https://api.bscscan.com/api"
         self.arbiscan_api_link: str = "https://api.arbiscan.io/api"
 
-    def load_dataset(self):
+    def load_dataset(self) -> list[dict[str, str]]:
         '''
         Load the dataset from server
         '''
@@ -58,62 +58,87 @@ class Fuzzer():
         res: Response = requests.post(self.url_receiving, data=data, headers=headers)
         soup: BeautifulSoup = BeautifulSoup(res.text, 'html.parser')
         
-        table = soup.find('table', attrs={'id':'dataTable'})
-        tbody = table.find('tbody')
+        table: Tag = soup.find('table', attrs={'id':'dataTable'})
+        tbody: Tag = table.find('tbody')
         
+        addresses: list = []
         for row in tbody.find_all('tr'):
             cols = row.find_all('td')
-            network = cols[1].text
-            address = cols[2].text
-            self.addresses.append({
+            network: str = cols[1].text
+            address: str = cols[2].text
+            
+            addresses.append({
                 "network": network, 
                 "address": address
             })
+            
+        return addresses
     
-    def get_information_from_address(self, address: str, network: str) -> None:
+    def get_information_from_address(self, data: dict[str, str]) -> dict[str, str]:
         # get contract abi, source code, bytecode from address and save to the file
-        get_abi_query: str = f"&action=getabi&address={address}"
-        get_sourcecode_query: str = f"&action=getsourcecode&address={address}&apikey={self.etherscan_api_key}"
+        get_abi_query: str = f"&action=getabi&address={data['address']}"
+        get_sourcecode_query: str = f"&action=getsourcecode&address={data['address']}&apikey={self.etherscan_api_key}"
         
-        if network == "etherscan.io":
+        if data['network'] == "etherscan.io":
             get_abi: str = self.etherscan_api_link + get_abi_query
             get_sourcecode: str = self.etherscan_api_link + get_sourcecode_query
-        elif network == "bscscan.com":
+        elif data['network'] == "bscscan.com":
             get_abi: str = self.bscscan_api_link + get_abi_query
             get_sourcecode: str = self.bscscan_api_link + get_sourcecode_query
-        elif network == "arbiscan.io":
+        elif data['network'] == "arbiscan.io":
             get_abi: str = self.arbiscan_api_link + get_abi_query
             get_sourcecode: str = self.arbiscan_api_link + get_sourcecode_query
         
-        abi_params = {
+        abi_params: dict = {
             "module": "contract",
             "action": "getabi",
-            "address": address,
+            "address": data['address'],
             "apikey": self.etherscan_api_key
         }
-        abi_response = requests.get(self.etherscan_api_link, params=abi_params)
-        abi_result = abi_response.json()
+        abi_response: Response = requests.get(self.etherscan_api_link, params=abi_params)
+        abi_result: dict = abi_response.json()
 
-        abi = abi_result["result"]
+        abi: dict = abi_result["result"]
         
-        byte_params = {
+        byte_params: dict = {
             "module": "proxy",
             "action": "eth_getCode",
-            "address": address,
+            "address": data['address'],
             "apikey": self.etherscan_api_key
         }
         
-        byte_response = requests.get(self.etherscan_api_link, params=byte_params)
-        byte_result = byte_response.json()
-        bytecode = byte_result["result"]
+        byte_response: Response = requests.get(self.etherscan_api_link, params=byte_params)
+        byte_result: dict = byte_response.json()
+        bytecode: str = byte_result["result"]
         
-        return {"abi" : abi, "bytecode": bytecode}
+        return {"abi": abi, "bytecode": bytecode}
+
+    def save_information_to_file(self, address: str, network: str, information: dict[str, str]) -> None:
+        # Make information directory
+        information_dir_name: str = "information"
+        if not os.path.exists(information_dir_name):
+            os.mkdir(information_dir_name)
+            
+        # Make address directory
+        contract_dir_name: str = os.path.join(information_dir_name, address)
+        if not os.path.exists(contract_dir_name):
+            os.mkdir(contract_dir_name)
+            
+        # Save abi, bytecode to file
+        abi_file_path: str = os.path.join(contract_dir_name, "abi.json")
+        bytecode_file_path: str = os.path.join(contract_dir_name, "bytecode.bin")
         
+        with open(abi_file_path, "w") as abi_file:
+            json.dump(information["abi"], abi_file, indent=4)
+            
+        with open(bytecode_file_path, "w") as bytecode_file:
+            bytecode_file.write(information["bytecode"])
+    
     def manage_fuzzer(self):
         pass
         
     def run_command(self, command: str, timeout: int = 60):
-        process: CompletedProcess = subprocess.run(command, capture_output=True, text=True, timeout=timeout)
+        process: CompletedProcess = subprocess.run(command + ' &', capture_output=True, text=True, timeout=timeout)
 
 class IR_fuzzer(Fuzzer):
     def __init__(self) -> None:
@@ -126,23 +151,42 @@ class IR_fuzzer(Fuzzer):
             os.system(f"python3 downloader.py -d {address['address']} -f .")
 
 class Smartian_fuzzer(Fuzzer):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, id: str) -> None:
+        super().__init__(id)
         pass
-        
-    def manage_fuzzer(self):
+
+    def manage_fuzzer(self, timelimit: int = 60):
         super().manage_fuzzer()
         
-        os.chdir("Smartian")
+        # Make output directory if not exists
+        output_dir: str = "output"
+        if not os.path.exists(output_dir):
+            os.mkdir(output_dir)
+            
+        # Check if there is information directory
+        information_dir: str = "information"
+        if not os.path.exists(information_dir):
+            print("There is no information directory")
+            return
+        
+        # loop in directory
+        for contract_dir in os.listdir(information_dir):
+            contract_dir_path: str = os.path.join(information_dir, contract_dir)
+            
+            # read abi, bytecode
+            abi_file_path: str = os.path.join(contract_dir_path, "abi.json")
+            bytecode_file_path: str = os.path.join(contract_dir_path, "bytecode.bin")
 
-        command: str = f"dotnet build/Smartian.dll fuzz -p {bytecode_file} -a {abi_file} -t {time_limit} -o {output_dir}"
+            command: str = f"dotnet Smartian/build/Smartian.dll fuzz -p {bytecode_file_path} -a {abi_file_path} -t {timelimit} -o {output_dir}"
+
+            self.run_command(command, timelimit)
 
 class ity_fuzzer(Fuzzer):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, id: str) -> None:
+        super().__init__(id)
         pass
         
-    def manage_fuzzer(self) -> None:
+    def manage_fuzzer(self, timelimit: int = 60) -> None:
         super().manage_fuzzer()
         
         for address in self.addresses:
@@ -152,10 +196,21 @@ class ity_fuzzer(Fuzzer):
             if address['network'] == "etherscan.io": 
                 command += f"--onchain-etherscan-api-key {self.etherscan_api}"
                 
-            self.run_command(command, 3600)
+            self.run_command(command, timelimit)
 
-# example        
-fuzz = Fuzzer('capstone122')
-fuzz.load_dataset()
-target_dict = fuzz.get_information_from_address(fuzz.addresses[0]['address'],fuzz.addresses[0]['network'])
-print(target_dict)
+# example
+id: str = "capstone122"
+smartian_fuzzer = Smartian_fuzzer(id)
+ity_fuzzer = ity_fuzzer(id)
+dataset = smartian_fuzzer.load_dataset()
+
+for data in dataset:
+    target_dict: dict[str, str] = smartian_fuzzer.get_information_from_address(data)
+    smartian_fuzzer.save_information_to_file(data['address'], data['network'], target_dict)
+    
+    # fuzz manage
+    # Smartian
+    smartian_fuzzer.manage_fuzzer(60)
+    
+    # ityfuzzer
+    ity_fuzzer.manage_fuzzer(3600)
