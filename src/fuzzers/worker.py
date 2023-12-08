@@ -179,7 +179,7 @@ class Smartian_fuzzer(Fuzzer):
             abi_file_path: str = os.path.join(contract_dir_path, "abi.json")
             bytecode_file_path: str = os.path.join(contract_dir_path, "bytecode.bin")
 
-            command: str = f"dotnet ./Smartian/build/Smartian.dll fuzz -p {bytecode_file_path} -a {abi_file_path} -t {timelimit} -o {output_dir}"
+            command: str = f"dotnet build/Smartian.dll fuzz -p {bytecode_file_path} -a {abi_file_path} -t {timelimit} -o {output_dir}"
 
             self.run_command(command, timelimit)
 
