@@ -208,6 +208,7 @@ ity = ity_fuzzer(id)
 dataset = ity.load_dataset()
 
 for data in dataset:
+    print(data)
     # target_dict: Dict[str, str] = smartian.get_information_from_address(data)
     # smartian.save_information_to_file(data['address'], data['network'], target_dict)
     
