@@ -193,7 +193,7 @@ class ity_fuzzer(Fuzzer):
         
         command: str = f"ityfuzz evm -t {data['address']} -c ETH"
         if data['network'] == "etherscan.io": 
-            command += f"--onchain-etherscan-api-key {self.etherscan_api}"
+            command += f" --onchain-etherscan-api-key {self.etherscan_api}"
             
         self.run_command(command, timelimit)
 
