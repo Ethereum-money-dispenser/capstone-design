@@ -140,7 +140,7 @@ class Fuzzer():
         pass
         
     def run_command(self, command: str, timeout: int = 60):
-        process: CompletedProcess = subprocess.run(command, shell=True, capture_output=True, text=True, timeout=timeout)
+        process: CompletedProcess = subprocess.run(command, capture_output=True, text=True, timeout=timeout, cwd="/home/dev/Smartian")
 
 class IR_fuzzer(Fuzzer):
     def __init__(self) -> None:
@@ -161,12 +161,12 @@ class Smartian_fuzzer(Fuzzer):
         super().manage_fuzzer()
         
         # Make output directory if not exists
-        output_dir: str = "./output"
+        output_dir: str = "output"
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
             
         # Check if there is information directory
-        information_dir: str = "./information"
+        information_dir: str = "information"
         if not os.path.exists(information_dir):
             print("There is no information directory")
             return
