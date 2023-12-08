@@ -20,10 +20,10 @@ class Fuzzer():
         self.etherscan_api_key: str = "9NFWVRRXYWJI1BUU3H8Y9IZTZKXGF4TUK3"
         self.bscscan_api_key: str = "[Bscscan API key]"
         self.arbiscan_api_key: str = "[Arbiscan API key]"
-        # self.url_sending: str = "http://64.110.110.12:5000/users-sending"
-        # self.url_receiving: str = "http://64.110.110.12:5000/users-receiving"
-        self.url_sending: str = "http://127.0.0.1:5000/users-sending"
-        self.url_receiving: str = "http://127.0.0.1:5000/users-receiving"
+        self.url_sending: str = "http://64.110.110.12:5000/users-sending"
+        self.url_receiving: str = "http://64.110.110.12:5000/users-receiving"
+        # self.url_sending: str = "http://127.0.0.1:5000/users-sending"
+        # self.url_receiving: str = "http://127.0.0.1:5000/users-receiving"
         self.etherscan_api_link: str = "https://api.etherscan.io/api"
         self.bscscan_api_link: str = "https://api.bscscan.com/api"
         self.arbiscan_api_link: str = "https://api.arbiscan.io/api"
@@ -201,18 +201,18 @@ class ity_fuzzer(Fuzzer):
 # example
 id: str = "capstone122"
 
-smartian = Smartian_fuzzer(id)
+# smartian = Smartian_fuzzer(id)
 ity = ity_fuzzer(id)
 
-dataset = smartian.load_dataset()
+dataset = ity.load_dataset()
 
 for data in dataset:
-    target_dict: Dict[str, str] = smartian.get_information_from_address(data)
-    smartian.save_information_to_file(data['address'], data['network'], target_dict)
+    # target_dict: Dict[str, str] = smartian.get_information_from_address(data)
+    # smartian.save_information_to_file(data['address'], data['network'], target_dict)
     
     # fuzz manage
     # Smartian
-    smartian.manage_fuzzer(60)
+    # smartian.manage_fuzzer(60)
     
     # ityfuzzer
-    ity.manage_fuzzer(data, 60)
+    ity.manage_fuzzer(data, 3600)
