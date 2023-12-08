@@ -90,10 +90,11 @@ def users_receiving():
         # get list from DB
         conn = get_address_db_connection()
         cursor = conn.cursor()
-        
-        cursor.execute('SELECT network, address, contract_name FROM contract_addresses limit 4')
+        number = int(str(int(userid[-3:])))
+        # print(number)
+        cursor.execute('SELECT network, address, contract_name FROM contract_addresses WHERE network = "etherscan.io" AND similar = address AND id % 40 = ?;',(number,))
         rows = cursor.fetchall()
-        
+        # print(rows)
         conn.close()
     
         # Number assignment
