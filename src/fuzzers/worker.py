@@ -166,7 +166,7 @@ class Smartian_fuzzer(Fuzzer):
             os.mkdir(output_dir)
             
         # Check if there is information directory
-        information_dir: str = "information"
+        information_dir: str = "./information"
         if not os.path.exists(information_dir):
             print("There is no information directory")
             return
