@@ -140,7 +140,7 @@ class Fuzzer():
         pass
         
     def run_command(self, command: str, timeout: int = 60):
-        process: CompletedProcess = subprocess.run(command + ' &', capture_output=True, text=True, timeout=timeout)
+        process: CompletedProcess = subprocess.run(command, capture_output=True, text=True, timeout=timeout)
 
 class IR_fuzzer(Fuzzer):
     def __init__(self) -> None:
