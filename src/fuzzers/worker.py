@@ -188,13 +188,13 @@ class ity_fuzzer(Fuzzer):
         super().__init__(id)
         pass
         
-    def manage_fuzzer(self, timelimit: int = 60) -> None:
+    def manage_fuzzer(self, address: str, timelimit: int = 60) -> None:
         super().manage_fuzzer()
         
         for address in self.addresses:
             # check the version of the contract
             
-            command: str = f"ityfuzz evm -t {address['address']} -c ETH"
+            command: str = f"ityfuzz evm -t {address} -c ETH"
             if address['network'] == "etherscan.io": 
                 command += f"--onchain-etherscan-api-key {self.etherscan_api}"
                 
@@ -202,17 +202,18 @@ class ity_fuzzer(Fuzzer):
 
 # example
 id: str = "capstone122"
-smartian_fuzzer = Smartian_fuzzer(id)
-ity_fuzzer = ity_fuzzer(id)
-dataset = smartian_fuzzer.load_dataset()
+
+smartian = Smartian_fuzzer(id)
+ity = ity_fuzzer(id)
+dataset = smartian.load_dataset()
 
 for data in dataset:
-    target_dict: Dict[str, str] = smartian_fuzzer.get_information_from_address(data)
-    smartian_fuzzer.save_information_to_file(data['address'], data['network'], target_dict)
+    target_dict: Dict[str, str] = smartian.get_information_from_address(data)
+    smartian.save_information_to_file(data['address'], data['network'], target_dict)
     
     # fuzz manage
     # Smartian
-    smartian_fuzzer.manage_fuzzer(60)
+    smartian.manage_fuzzer(60)
     
     # ityfuzzer
-    ity_fuzzer.manage_fuzzer(3600)
+    ity.manage_fuzzer(data["address"], 60)
