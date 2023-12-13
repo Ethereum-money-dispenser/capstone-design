@@ -32,23 +32,23 @@ from slither.utils.type import is_underlying_type_address
 
 class MemeTokenBurnable(AbstractDetector):
     ARGUMENT = "meme-token-burnable"
-    HELP = "Dangerous strict equalities"
+    HELP = "meme-token-burnable"
     IMPACT = DetectorClassification.HIGH
     CONFIDENCE = DetectorClassification.HIGH
 
     WIKI = (
-        ""
+        "meme-token-burnable"
     )
 
-    WIKI_TITLE = ""
-    WIKI_DESCRIPTION = ""
+    WIKI_TITLE = "meme-token-burnable"
+    WIKI_DESCRIPTION = "meme-token-burnable"
 
     # region wiki_exploit_scenario
-    WIKI_EXPLOIT_SCENARIO = """"""
+    WIKI_EXPLOIT_SCENARIO = """meme-token-burnable"""
     # endregion wiki_exploit_scenario
 
     WIKI_RECOMMENDATION = (
-        """Don't use strict equality to determine if an account has enough Ether or tokens."""
+        """meme-token-burnable"""
     )
 
     def detect_burn(self, contract: Contract) -> List[FunctionContract]:

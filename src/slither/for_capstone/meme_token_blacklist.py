@@ -32,23 +32,23 @@ from slither.utils.type import is_underlying_type_address
 
 class MemeTokenBlacklist(AbstractDetector):
     ARGUMENT = "meme-token-blacklist"
-    HELP = "Dangerous strict equalities"
+    HELP = "meme-token-blacklist"
     IMPACT = DetectorClassification.HIGH
     CONFIDENCE = DetectorClassification.HIGH
 
     WIKI = (
-        ""
+        "meme-token-blacklist"
     )
 
-    WIKI_TITLE = ""
-    WIKI_DESCRIPTION = ""
+    WIKI_TITLE = "meme-token-blacklist"
+    WIKI_DESCRIPTION = "meme-token-blacklist"
 
     # region wiki_exploit_scenario
-    WIKI_EXPLOIT_SCENARIO = """"""
+    WIKI_EXPLOIT_SCENARIO = """meme-token-blacklist"""
     # endregion wiki_exploit_scenario
 
     WIKI_RECOMMENDATION = (
-        """Don't use strict equality to determine if an account has enough Ether or tokens."""
+        """meme-token-blacklist"""
     )
     
     def detect_blacklist(self, contract: Contract) -> List[FunctionContract]:

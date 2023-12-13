@@ -35,23 +35,23 @@ from slither.utils.type import is_underlying_type_address
 
 class MemeTokenEvent(AbstractDetector):
     ARGUMENT = "meme-token-event"
-    HELP = "Dangerous strict equalities"
+    HELP = "meme-token-event"
     IMPACT = DetectorClassification.HIGH
     CONFIDENCE = DetectorClassification.HIGH
 
     WIKI = (
-        ""
+        "meme-token-event"
     )
 
-    WIKI_TITLE = ""
-    WIKI_DESCRIPTION = ""
+    WIKI_TITLE = "meme-token-event"
+    WIKI_DESCRIPTION = "meme-token-event"
 
     # region wiki_exploit_scenario
-    WIKI_EXPLOIT_SCENARIO = """"""
+    WIKI_EXPLOIT_SCENARIO = """meme-token-event"""
     # endregion wiki_exploit_scenario
 
     WIKI_RECOMMENDATION = (
-        """Don't use strict equality to determine if an account has enough Ether or tokens."""
+        """meme-token-event"""
     )
     
     def _detect(self) -> List[Output]:

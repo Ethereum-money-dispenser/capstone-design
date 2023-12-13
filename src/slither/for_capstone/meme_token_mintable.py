@@ -35,23 +35,23 @@ from slither.utils.type import is_underlying_type_address
 
 class MemeTokenMintable(AbstractDetector):
     ARGUMENT = "meme-token-mintable"
-    HELP = "Dangerous strict equalities"
+    HELP = "meme-token-mintable"
     IMPACT = DetectorClassification.HIGH
     CONFIDENCE = DetectorClassification.HIGH
 
     WIKI = (
-        ""
+        "meme-token-mintable"
     )
 
-    WIKI_TITLE = ""
-    WIKI_DESCRIPTION = ""
+    WIKI_TITLE = "meme-token-mintable"
+    WIKI_DESCRIPTION = "meme-token-mintable"
 
     # region wiki_exploit_scenario
-    WIKI_EXPLOIT_SCENARIO = """"""
+    WIKI_EXPLOIT_SCENARIO = """meme-token-mintable"""
     # endregion wiki_exploit_scenario
 
     WIKI_RECOMMENDATION = (
-        """Don't use strict equality to determine if an account has enough Ether or tokens."""
+        """meme-token-mintable"""
     )
 
     def detect_mint(self, contract: Contract) -> List[FunctionContract]:

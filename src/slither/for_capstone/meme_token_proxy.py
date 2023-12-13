@@ -35,23 +35,23 @@ from slither.utils.type import is_underlying_type_address
 
 class MemeTokenProxy(AbstractDetector):
     ARGUMENT = "meme-token-proxy"
-    HELP = "Dangerous strict equalities"
+    HELP = "meme-token-proxy"
     IMPACT = DetectorClassification.HIGH
     CONFIDENCE = DetectorClassification.HIGH
 
     WIKI = (
-        ""
+        "meme-token-proxy"
     )
 
-    WIKI_TITLE = ""
-    WIKI_DESCRIPTION = ""
+    WIKI_TITLE = "meme-token-proxy"
+    WIKI_DESCRIPTION = "meme-token-proxy"
 
     # region wiki_exploit_scenario
-    WIKI_EXPLOIT_SCENARIO = """"""
+    WIKI_EXPLOIT_SCENARIO = """meme-token-proxy"""
     # endregion wiki_exploit_scenario
 
     WIKI_RECOMMENDATION = (
-        """Don't use strict equality to determine if an account has enough Ether or tokens."""
+        """meme-token-proxy"""
     )
 
 
